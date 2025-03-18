@@ -66,32 +66,7 @@ const Chat = () => {
 
   const [isUploading, setIsUploading] = useState(false);
   
-  const searchSimilarArticles = async (query) => {
-    const searchUrl = `https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&term=${encodeURIComponent(query)}&retmode=json&retmax=5&sort=date`;
-    try {
-      const response = await fetch(searchUrl);
-      const data = await response.json();
-      const pmids = data.esearchresult.idlist || [];
-      if (pmids.length === 0) return [];
-
-      const detailsUrl = `https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&id=${pmids.join(',')}&retmode=json`;
-      const detailsResponse = await fetch(detailsUrl);
-      const detailsData = await detailsResponse.json();
-
-      return pmids.map(pmid => {
-        const article = detailsData.result[pmid];
-        return {
-          title: article.title,
-          authors: article.authors.map(author => author.name).join(', '),
-          link: `https://pubmed.ncbi.nlm.nih.gov/${pmid}/`
-        };
-      });
-    } catch (error) {
-      console.error('Error fetching similar articles:', error);
-      setChatHistory(prev => [...prev, { role: 'assistant', content: 'Error finding similar articles.' }]);
-      return [];
-    }
-  };
+  
   const handleFileUpload = async () => {
     if (!file) {
       setChatHistory([...chatHistory, { role: 'assistant', content: 'Please select a file first.' }]);
@@ -485,7 +460,7 @@ const Chat = () => {
                 />
                 <Button
                   variant="contained"
-                  onClick={handleSendMessage}
+                  onClick={() => handleSendMessage(message)}
                   sx={{
                     bgcolor: '#1976d2',
                     '&:hover': { bgcolor: '#1565c0' },
