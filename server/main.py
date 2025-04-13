@@ -10,8 +10,11 @@ from flask_cors import CORS
 from openai import OpenAI
 
 
-from server import app
-# Import the database functions from create_db.py.
+from server.app import (
+    extract_title_and_abstract,
+    extract_pdf_keywords,
+    search_similar_articles_from_pdf
+)
 from server import create_db
 
 # Initialize Flask app.
