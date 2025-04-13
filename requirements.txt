@@ -24,3 +24,4 @@ PyMuPDF==1.25.3  # fitz
 apscheduler==3.10.1  # Scheduler
 requests==2.32.3  # API calls
 pypdf2
+pypdf
